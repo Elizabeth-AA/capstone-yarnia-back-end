@@ -1,10 +1,13 @@
 {
   "name": "capstone-yarnia-server",
   "version": "1.0.0",
-  "description": "��#\u0000 \u0000c\u0000a\u0000p\u0000s\u0000t\u0000o\u0000n\u0000e\u0000-\u0000y\u0000a\u0000r\u0000n\u0000i\u0000a\u0000-\u0000b\u0000a\u0000c\u0000k\u0000-\u0000e\u0000n\u0000d\u0000\r\u0000 \u0000",
-  "main": "index.js",
+  "description": "BrainStation Capstone Project 2023",
+  "main": "src/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "db:migrate": "knex migrate:latest --knexfile ./src/db/config/knexfile.cjs",
+    "db:seed": "knex seed:run --knexfile ./src/db/config/knexfile.cjs",
+    "dev": "NODE_ENV=development nodemon -r dotenv/config --experimental-modules --ext cjs,js,json src/index.js dotenv_config_path=.env",
+    "start": "NODE_ENV=production node --experimental-modules src/index.js"
   },
   "repository": {
     "type": "git",
@@ -23,5 +26,19 @@
     "knex": "^2.4.2",
     "mysql2": "^3.3.0",
     "objection": "^3.0.1"
+  },
+  "devDependencies": {
+    "dotenv": "^16.0.3",
+    "nodemon": "^2.0.22",
+    "prettier": "^2.8.8"
+  },
+  "imports": {
+    "#app/*": "./src/*",
+    "#controllers/*": "./src/controllers/*",
+    "#models/*": "./src/models/*",
+    "#services/*": "./src/services/*",
+    "#routes": "./src/routes/index.js",
+    "#utils/*": "./src/utils/*",
+    "#database": "./src/db/connection.js"
   }
 }
