@@ -1,6 +1,6 @@
 import User from '#models/users.js'
 
-class userService {
+class UserService {
     getById(id) {
         return User.getById(id)
     }
@@ -14,4 +14,4 @@ class userService {
     }
 }
 
-export default new userService()
+export default new UserService()
