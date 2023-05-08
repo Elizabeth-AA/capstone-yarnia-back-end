@@ -1,6 +1,6 @@
 import Yarn from '#models/yarn.js'
 
-class yarnService {
+class YarnService {
     getById(id) {
         return Yarn.getById(id)
     }
@@ -9,3 +9,5 @@ class yarnService {
         return Yarn.addYarn(yarn)
     }
 }
+
+export default new YarnService()
