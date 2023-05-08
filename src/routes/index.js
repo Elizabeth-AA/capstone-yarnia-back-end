@@ -4,7 +4,7 @@ import yarnRouter from '#app/routes/yarnRoute.js'
 
 const routes = Router()
 
-routes.use('/api/users', usersRouter)
+routes.use('/api/user', usersRouter)
 routes.use('/api/yarn', yarnRouter)
 
 export default routes
