@@ -6,3 +6,5 @@ const routes = Router()
 
 routes.use('/api/users', usersRouter)
 routes.use('/api/yarn', yarnRouter)
+
+export default routes

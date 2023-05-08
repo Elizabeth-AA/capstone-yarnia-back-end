@@ -12,7 +12,7 @@ module.exports = {
     },
     migrations: {
         directory: '../migrations',
-        tableName: '20230402170859_create_tables',
+        tableName: 'knex_migrations',
     },
     seeds: {
         directory: '../seeds',

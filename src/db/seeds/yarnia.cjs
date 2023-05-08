@@ -1,6 +1,6 @@
-const userData = require('./seed_data/users');
-const userYarnData = require('./seed_data/users_yarn');
-const yarnData = require('./seed_data/yarn');
+const userData = require('./seed_data/users.cjs');
+const userYarnData = require('./seed_data/users_yarn.cjs');
+const yarnData = require('./seed_data/yarn.cjs');
 
 exports.seed = function (knex) {
   return knex('users').del()
