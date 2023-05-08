@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "BrainStation Capstone Project 2023",
   "main": "src/index.js",
+  "type": "module",
   "scripts": {
     "db:migrate": "knex migrate:latest --knexfile ./src/db/config/knexfile.cjs",
     "db:seed": "knex seed:run --knexfile ./src/db/config/knexfile.cjs",
@@ -24,7 +25,7 @@
     "docker": "^1.0.0",
     "express": "^4.18.2",
     "knex": "^2.4.2",
-    "mysql2": "^3.3.0",
+    "mysql": "^2.18.1",
     "objection": "^3.0.1"
   },
   "devDependencies": {
@@ -40,5 +41,8 @@
     "#routes": "./src/routes/index.js",
     "#utils/*": "./src/utils/*",
     "#database": "./src/db/connection.js"
+  },
+  "optionalDependencies": {
+    "win-node-env": "^0.6.1"
   }
 }
