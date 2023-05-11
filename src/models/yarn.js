@@ -26,3 +26,5 @@ class Yarn {
             )
     }
 }
+
+export default new Yarn()

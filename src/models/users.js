@@ -2,12 +2,6 @@ import database from '#database'
 
 class User {
 
-    addUser(user) {
-        return database
-            .insert(user)
-            .into('users')
-    }
-
     getById(id) {
         return database
             .distinct('id')
@@ -30,6 +24,12 @@ class User {
             .where('users.id', '=', id)
     }
 
+    addUser(user) {
+        return database
+            .insert(user)
+            .into('users')
+    }
+    
     // delete
     // update
 

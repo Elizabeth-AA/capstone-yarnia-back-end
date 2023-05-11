@@ -20,4 +20,4 @@ class YarnController {
     }
 }
 
-export default YarnController
+export default new YarnController()
