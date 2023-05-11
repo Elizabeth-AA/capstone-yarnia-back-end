@@ -29,7 +29,30 @@ class User {
             .insert(user)
             .into('users')
     }
-    
+
+    async addStashItem(id, data) {
+        try {
+            const existingYarn = await database
+                .from('yarn')
+                .where('rav_id', data.rav_id)
+                .first();
+            let yarnId;
+            
+            if (!existingYarn) {
+                const [newYarnId] = await database
+                    .insert({...data})
+                    .into('yarn');
+                yarnId = newYarnId;
+            } else {
+                yarnId = existingYarn.yarn_id
+            }   
+        } finally {
+            await database
+                .insert({user_id: id, yarn_id: yarnId})
+            return yarnId;    
+        }
+    }
+
     // delete
     // update
 

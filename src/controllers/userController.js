@@ -27,6 +27,15 @@ class UserController {
             res.status(500).json({ message: error.message })
         }
     }
+
+    async addStashItem(req, res) {
+        try {
+            await UserService.addStashItem(req.params.id, req.body)
+            res.sendStatus(201)
+        } catch (error) {
+            res.status(500).json({ message: error.message })
+        }
+    }
 }
 
 export default new UserController()
