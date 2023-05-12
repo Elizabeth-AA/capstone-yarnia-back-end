@@ -5,6 +5,10 @@ class UserService {
         return User.getById(id)
     }
 
+    getByEmail(email) {
+        return User.getByEmail(email)
+    }
+
     getStash(id) {
         return User.getStash(id)
     }

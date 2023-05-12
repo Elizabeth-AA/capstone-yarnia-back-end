@@ -36,6 +36,31 @@ class UserController {
             res.status(500).json({ message: error.message })
         }
     }
+
+    // add username and check if unique?
+    async userAuth(email, password, done) {
+        try {
+          const user = await getByEmail({ email });
+          if (!user) {
+            return done(null, false, { message: 'Incorrect email.' });
+          }
+          const passwordMatch = await bcrypt.compare(password, user.password);
+          if (!passwordMatch) {
+            return done(null, false, { message: 'Incorrect password.' });
+          }
+          return done(null, user);
+        } catch (error) {
+          return done(error);
+        }
+    }
+
+    async requireAuth(req, res, next) {
+        if (req.isAuthenticated()) {
+            res.render('/', { user: req.user });
+            return next();
+        }
+        res.redirect('/login');
+    }
 }
 
 export default new UserController()

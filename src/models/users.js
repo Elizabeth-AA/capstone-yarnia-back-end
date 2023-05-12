@@ -16,6 +16,13 @@ class User {
             )
     }
 
+    getByEmail(email) {
+        return database
+            .from('users')
+            .where('email', email)
+            .first()
+    }
+
     getStash(id) {
         return database
             .from('yarn')
@@ -52,6 +59,7 @@ class User {
             return yarnId;    
         }
     }
+
 
     // delete
     // update
