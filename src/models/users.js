@@ -29,14 +29,15 @@ class User {
             .insert(user)
             .into('users')
     }
+    // async addStashItem(id, data)
+    async addStashItem(data) {
+        let yarnId = null
 
-    async addStashItem(id, data) {
         try {
             const existingYarn = await database
                 .from('yarn')
                 .where('rav_id', data.rav_id)
                 .first();
-            let yarnId;
             
             if (!existingYarn) {
                 const [newYarnId] = await database
@@ -46,16 +47,22 @@ class User {
             } else {
                 yarnId = existingYarn.yarn_id
             }   
-        } finally {
-            await database
-                .insert({user_id: id, yarn_id: yarnId})
-            return yarnId;    
+        }  catch (error) {
+            console.log(error)
         }
+        finally {
+            if (yarnId !== null) {
+            await database
+                // .insert({user_id: id, yarn_id: yarnId})
+                .insert({yarn_id: yarnId})
+            return yarnId;    
+        }}
     }
+}
 
     // delete
     // update
 
-}
+
 
 export default new User()
