@@ -8,12 +8,12 @@ class Yarn {
             .into('yarn')
     }
 
-    getById(id) {
+    getById(rav_id) {
         return database
-            .distinct('id')
+            .distinct('rav_id')
             .first()
             .from('yarn')
-            .where('id', id)
+            .where('rav_id', rav_id)
             .select(
                 'id',
                 'rav_id',

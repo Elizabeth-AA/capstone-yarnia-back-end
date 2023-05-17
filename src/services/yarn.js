@@ -1,8 +1,8 @@
 import Yarn from '#models/yarn.js'
 
 class YarnService {
-    getById(id) {
-        return Yarn.getById(id)
+    getById(rav_id) {
+        return Yarn.getById(rav_id)
     }
 
     addYarn(yarn) {

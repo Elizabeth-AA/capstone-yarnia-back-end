@@ -4,7 +4,7 @@ import YarnController from '#controllers/yarnController.js'
 const yarnRouter = Router()
 
 yarnRouter
-    .get('/:id', YarnController.getById)
+    .get('/:rav_id', YarnController.getById)
     .post('/', YarnController.addYarn)
 
 export default yarnRouter

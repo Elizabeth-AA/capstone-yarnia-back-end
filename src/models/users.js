@@ -31,31 +31,31 @@ class User {
     }
     // async addStashItem(id, data)
     async addStashItem(data) {
-        let yarnId = null
+        let yarn_id = null
 
         try {
             const existingYarn = await database
                 .from('yarn')
                 .where('rav_id', data.rav_id)
-                .first();
             
             if (!existingYarn) {
                 const [newYarnId] = await database
                     .insert({...data})
                     .into('yarn');
-                yarnId = newYarnId;
+                yarn_id = newYarnId;
             } else {
-                yarnId = existingYarn.yarn_id
+                yarn_id = existingYarn.yarn_id
             }   
         }  catch (error) {
             console.log(error)
         }
         finally {
-            if (yarnId !== null) {
+            if (yarn_id !== null) {
             await database
                 // .insert({user_id: id, yarn_id: yarnId})
-                .insert({yarn_id: yarnId})
-            return yarnId;    
+                .insert({user_id: user_id, yarn_id: yarn_id})
+                .into('users_yarn')
+            return yarn_id;    
         }}
     }
 }
