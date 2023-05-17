@@ -29,7 +29,7 @@ class User {
             .insert(user)
             .into('users')
     }
-    // async addStashItem(id, data)
+
     async addStashItem(data) {
         let yarn_id = null
 
@@ -37,7 +37,6 @@ class User {
             const existingYarn = await database
                 .from('yarn')
                 .where('rav_id', data.rav_id)
-            
             if (!existingYarn) {
                 const [newYarnId] = await database
                     .insert({...data})
@@ -52,17 +51,11 @@ class User {
         finally {
             if (yarn_id !== null) {
             await database
-                // .insert({user_id: id, yarn_id: yarnId})
                 .insert({user_id: user_id, yarn_id: yarn_id})
                 .into('users_yarn')
             return yarn_id;    
         }}
     }
 }
-
-    // delete
-    // update
-
-
 
 export default new User()

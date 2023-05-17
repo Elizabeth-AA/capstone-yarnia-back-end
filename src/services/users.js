@@ -16,9 +16,6 @@ class UserService {
     addStashItem(data) {
         return User.addStashItem(data)
     }
-    // addStashItem(id, data) {
-    //     return User.addStashItem(id, data)
-    // }
 }
 
 export default new UserService()
