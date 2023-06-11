@@ -19,6 +19,9 @@ exports.up = async function(knex) {
           table.string('yarn_company').notNullable();
           table.string('yarn_weight');
           table.integer('yardage');
+          table.integer('grams');
+          table.boolean('machine_washable');
+          table.string('texture');
           table.string('photo');
           table.string('permalink').notNullable();
       })}
@@ -51,5 +54,5 @@ exports.up = async function(knex) {
    * @returns { Promise<void> }
    */
   exports.down = function(knex) {
-    return knex.schema.dropTable('users').dropTable('users_yarn').dropTable('yarn');
+    return knex.schema.dropTable('users_yarn').dropTable('yarn').dropTable('users');
   };
