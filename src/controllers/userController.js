@@ -28,6 +28,15 @@ class UserController {
         }
     }
 
+    async authUser(req, res) {
+        try {
+            await UserService.authUser(req.body)
+            res.sendStatus(201)
+        } catch (error) {
+            res.status(500).json({ message: error.message })
+        }
+    }
+
     async addStashItem(req, res) {
         try {
             await UserService.addStashItem(req.body)

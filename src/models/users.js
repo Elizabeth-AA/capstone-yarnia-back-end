@@ -1,4 +1,6 @@
 import database from '#database'
+import bcrypt from 'bcrypt'
+import jwt from 'jsonwebtoken'
 
 class User {
 
@@ -25,10 +27,30 @@ class User {
     }
 
     addUser(user) {
-        return database
-            .insert(user)
-            .into('users')
+        // const { user } = req.body
+        bcrypt.hash(user.password, 12)
+            .then(hashed_password => {
+                return database
+                .insert({
+                    username: user.username,
+                    password: hashed_password
+                })
+                .into('users')
+                .returning("*")
+                .then(users => {
+                    const user = users[0]
+                    response.json({ user })
+                }).catch(error => {
+                    response.json({ error: error.message })
+                })
+            })
+      
     }
+
+    async authUser(data) {
+
+    }
+    
     // async addStashItem(id, data)
     async addStashItem(data) {
         let yarn_id = null
