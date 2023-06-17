@@ -13,6 +13,10 @@ class UserService {
         return User.addUser(user)
     }
 
+    authUser(user) {
+        return User.addUser(user)
+    }
+
     addStashItem(data) {
         return User.addStashItem(data)
     }

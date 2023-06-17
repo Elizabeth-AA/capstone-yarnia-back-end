@@ -47,8 +47,31 @@ class User {
       
     }
 
-    async authUser(data) {
-
+    authUser(user) {
+        // const { user } = req.body
+        return database
+            .from('users')
+            .where({ username: user.username })
+            .first()
+            .then(retrievedUser => {
+                if(!retrievedUser) throw new Error("user not found")
+                return Promise.all([
+                    bcrypt.compare(user.password, retrievedUser.password),
+                    Promise.resolve(retrievedUser)
+                ]).then(results => {
+                    const passwordMatch = results[0]
+                    if(!passwordMatch) throw new Error("incorrect password")
+                    const user = results[1]
+                    const payload = {username: user.username}
+                    const secret = "SECRET"
+                    jwt.sign(payload, secret, (error, token) => {
+                        if(error) throw new Error("sign in error")
+                        response.json({token, user})
+                    }).catch(error => {
+                        response.json({message: error.message})
+                    })
+                })
+            })
     }
     
     // async addStashItem(id, data)
