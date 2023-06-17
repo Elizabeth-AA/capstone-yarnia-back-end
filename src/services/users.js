@@ -14,7 +14,7 @@ class UserService {
     }
 
     authUser(user) {
-        return User.addUser(user)
+        return User.authUser(user)
     }
 
     addStashItem(data) {

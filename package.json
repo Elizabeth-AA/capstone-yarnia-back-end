@@ -41,7 +41,7 @@
     "#models/*": "./src/models/*",
     "#services/*": "./src/services/*",
     "#routes": "./src/routes/index.js",
-    "#utils/*": "./src/utils/*",
+    "#middleware/*": "./src/middleware/*",
     "#database": "./src/db/connection.js"
   },
   "optionalDependencies": {
