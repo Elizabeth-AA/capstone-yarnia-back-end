@@ -2,7 +2,7 @@ import express from 'express'
 import bodyParser from 'body-parser'
 import cors from 'cors'
 import routes from '#routes'
-import authenticate from '#middleware/authenticate'
+import authenticate from '#middleware/authenticate.js'
 
 const app = express()
 

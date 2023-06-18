@@ -26,6 +26,7 @@
     "cors": "^2.8.5",
     "docker": "^1.0.0",
     "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
     "knex": "^2.4.2",
     "mysql": "^2.18.1",
     "objection": "^3.0.1"
@@ -41,6 +42,7 @@
     "#models/*": "./src/models/*",
     "#services/*": "./src/services/*",
     "#routes": "./src/routes/index.js",
+    "#utils/*": "./src/utils/*",
     "#middleware/*": "./src/middleware/*",
     "#database": "./src/db/connection.js"
   },

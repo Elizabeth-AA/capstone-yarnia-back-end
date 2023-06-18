@@ -2,10 +2,19 @@ import jwt from 'jsonwebtoken'
 
 export default function authenticate(req, res, next) {
     const authHeader = req.get("Authorization")
+    
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        return res.status(401).json({ message: "Invalid or missing Authorization header" });
+    }
+
     const token = authHeader.split(" ")[1]
     const secret = "SECRET"
+
     jwt.verify(token, secret, (error, payload) => {
-        if(error) throw new Error("log in error")
+        if (error) {
+            return res.status(401).json({ message: "Invalid token" })
+        }
+
         return database
             .from('users')
             .where({username: payload.username})
@@ -14,7 +23,7 @@ export default function authenticate(req, res, next) {
                 req.user = user
                 next()
             }).catch(error => {
-                res.json({message: error.message})
+                res.status(500).json({ message: "Internal server error" })
             })
     })
 }

@@ -1,6 +1,7 @@
 import database from '#database'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
+import generateToken from "#utils/helpers.js"
 
 class User {
 
@@ -37,9 +38,10 @@ class User {
                 })
                 .into('users')
                 .returning("*")
-                .then(users => {
+                .then((users) => {
                     const user = users[0]
-                    response.json({ user })
+                    const token = generateToken(user.username)
+                    response.json({ user, token })
                 }).catch(error => {
                     response.json({ error: error.message })
                 })
