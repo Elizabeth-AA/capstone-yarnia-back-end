@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken'
 
 export default function authenticate(req, res, next) {
     const authHeader = req.get("Authorization")
-    
+    console.log(res)
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
         return res.status(401).json({ message: "Invalid or missing Authorization header" });
     }

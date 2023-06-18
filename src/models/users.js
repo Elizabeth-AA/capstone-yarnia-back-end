@@ -27,8 +27,7 @@ class User {
             .where('users.id', '=', id)
     }
 
-    addUser(user) {
-        // const { user } = req.body
+    addUser(user, response) {
         bcrypt.hash(user.password, 12)
             .then(hashed_password => {
                 return database

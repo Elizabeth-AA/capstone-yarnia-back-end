@@ -21,7 +21,7 @@ class UserController {
 
     async addUser(req, res) {
         try {
-            await UserService.addUser(req.body)
+            await UserService.addUser(req.body, res)
             res.sendStatus(201)
         } catch (error) {
             res.status(500).json({ message: error.message })
