@@ -2,6 +2,7 @@ import database from '#database'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import generateToken from "#utils/helpers.js"
+import { hashPassword } from '#utils/helpers.js'
 
 class User {
 
@@ -27,26 +28,52 @@ class User {
             .where('users.id', '=', id)
     }
 
-    addUser(user, response) {
-        bcrypt.hash(user.password, 12)
-            .then(hashed_password => {
-                return database
-                .insert({
-                    username: user.username,
-                    password: hashed_password
-                })
+    async addUser(data) {
+        console.log(data)
+        try {
+            const hashedPassword = await hashPassword(data.password)
+            console.log(hashedPassword)
+            const userData = {
+                username: data.username,
+                email: data.email_address,
+                password: hashedPassword,
+            }
+            console.log(userData)
+            return database
+                .insert(userData)
                 .into('users')
-                .returning("*")
-                .then((users) => {
-                    const user = users[0]
-                    const token = generateToken(user.username)
-                    response.json({ user, token })
-                }).catch(error => {
-                    response.json({ error: error.message })
-                })
-            })
-      
+        } catch (err) {
+            console.log(err)
+        }
+        // console.log(data)
+
+        // .hash(data.password, 12)
+        //     .then(hashed_password => {
+        //         const userData = {
+        //             username: data.username,
+        //             email: data.email_address,
+        //             password: hashed_password,
+        //         }
+        //         console.log(userData)
+        //         return database
+        //         .insert(userData)
+        //         .into('users')
+        //         .returning("*")
+        //         .then((users) => {
+        //             const user = users[0]
+        //             const token = generateToken(user.username)
+        //             return { user, token }
+        //         })
+        //         .catch((error) => {
+        //             response.status(500).json({ error: error.message })
+        //         })
+        //     })
+        //     .catch((error) => {
+        //         response.status(500).json({ error: error.message });
+        //       });
     }
+
+
 
     authUser(user) {
         // const { user } = req.body
@@ -108,7 +135,5 @@ class User {
 
     // delete
     // update
-
-
 
 export default new User()

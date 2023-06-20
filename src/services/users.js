@@ -9,8 +9,8 @@ class UserService {
         return User.getStash(id)
     }
 
-    addUser(user) {
-        return User.addUser(user)
+    addUser(data) {
+        return User.addUser(data)
     }
 
     authUser(user) {
