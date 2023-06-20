@@ -28,18 +28,8 @@ export async function comparePassword(password, hash) {
     } catch (e) {
         console.log(e)
     }
-
-        
-        // .then(result => {
-        //     return result
-        // })
-        // .catch(err => {
-        //     console.log(err)
-        // })
 }
 
 export default function generateToken(username) {
-    const payload = { username };
-    const options = { expiresIn: '24h' };
-    return jwt.sign(payload, secret, options);
+    return jwt.sign(username, "SECRET", { expiresIn: '1800s' })
 }
