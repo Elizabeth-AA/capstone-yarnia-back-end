@@ -30,40 +30,31 @@ class User {
                 email: data.email_address,
                 password: hashedPassword,
             }
-            const newUser = await database
+            const [userId] = await database
                 .insert(userData)
                 .into('users')
-            const token = generateToken({ username: newUser.username })
-                return token
+            const token = generateToken({ username: userData.username })
+                return { token, userId }
         } catch (error) {
             console.log(error)
+            throw error
         }
     }
 
     async authUser(user) {
-        console.log("model ", user)
         try {
             const retrievedUser = await database
                 .from('users')
                 .where('email', user.email)
                 .first()
-            console.log("retrieved user ", retrievedUser)
             if (!retrievedUser) throw new Error('user not found')
-            // const passwordMatch = await Promise.all([
-            //     bcrypt.compare(user.password, retrievedUser.password),
-            //     Promise.resolve(retrievedUser),
-            // ])
             const passwordMatch = await bcrypt.compare(user.password, retrievedUser.password)
-            console.log(passwordMatch)
             if (!passwordMatch) throw new Error('incorrect password')
             const payload = { user: retrievedUser }
-            console.log(payload)
             const secret = 'SECRET'
-            const token = jwt.sign(payload, secret, { expiresIn: '1800s' }); // Generate the token
-    console.log('token ', token);
-    return { token, user: retrievedUser };
+            const token = jwt.sign(payload, secret, { expiresIn: '1800s' });
+    return { token, userId: retrievedUser.id };
   } catch (error) {
-    console.log('auth failed ', error);
     throw error;
   }
         }

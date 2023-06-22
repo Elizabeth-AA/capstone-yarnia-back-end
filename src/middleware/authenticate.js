@@ -15,7 +15,6 @@ export default function authenticate(req, res, next) {
             return res.status(401).json({ message: "Invalid token" })
         }
         const { username } = decoded
-        // req.user = decoded
         return database
             .from('users')
             .where({ username })
@@ -32,16 +31,3 @@ export default function authenticate(req, res, next) {
               })
     })
 }
-
-//         return database
-//             .from('users')
-//             .where({username: payload.username})
-//             .first()
-//             .then(user => {
-//                 req.user = user
-//                 next()
-//             }).catch(error => {
-//                 res.status(500).json({ message: "Internal server error" })
-//             })
-//     })
-// }

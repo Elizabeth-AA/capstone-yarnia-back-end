@@ -21,8 +21,8 @@ class UserController {
 
     async addUser(req, res) {
         try {
-            await UserService.addUser(req.body)
-            res.status(201).json(req.body)
+            const { token, userId } = await UserService.addUser(req.body)
+            res.status(201).json({ token, userId })
         } catch (error) {
             res.status(500).json({ message: error.message })
         }
@@ -30,11 +30,9 @@ class UserController {
 
     async authUser(req, res) {
         try {
-            console.log(req.body)
             const user = req.body
-            const token = await UserService.authUser(user)
-            console.log("user controller: " + JSON.stringify(token, user))
-            return res.status(201).json({ token, user })
+            const { token, userId } = await UserService.authUser(user)
+            return res.status(201).json({ token, userId })
         } catch (error) {
             return res.status(500).json({ message: error.message })
         }
