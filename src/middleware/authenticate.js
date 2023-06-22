@@ -7,14 +7,29 @@ export default function authenticate(req, res, next) {
         return res.status(401).json({ message: 'Missing token' })
     }
 
+    const formattedToken = token.replace('Bearer ', '')
     const secret = "SECRET"
 
-    jwt.verify(token, secret, (err, decoded) => {
+    jwt.verify(formattedToken, secret, (err, decoded) => {
         if (err) {
             return res.status(401).json({ message: "Invalid token" })
         }
-        req.user = decoded
-        next()
+        const { username } = decoded
+        // req.user = decoded
+        return database
+            .from('users')
+            .where({ username })
+            .first()
+            .then(user => {
+                if (!user) {
+                    return res.status(401).json({ message: 'User not found' })
+                }
+                req.user = user
+                next()
+            })
+            .catch((error) => {
+                res.status(500).json({ message: 'Internal server error' });
+              })
     })
 }
 

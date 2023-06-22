@@ -59,20 +59,13 @@ class User {
             const payload = { user: retrievedUser }
             console.log(payload)
             const secret = 'SECRET'
-            const token = await new Promise((resolve, reject) => {
-                jwt.sign(payload, secret, (error, token) => {
-                  if (error) reject(error);
-                  resolve(token);
-                });
-              });
-            console.log("token ", token)
-            return { token, user: retrievedUser }
-            //   return response.json({ token, user: retrievedUser });
-            // } catch (error) {
-            //   return response.status(500).json({ message: error.message });
-            } catch (error) {
-                console.log("auth failed ", error)
-            }
+            const token = jwt.sign(payload, secret, { expiresIn: '1800s' }); // Generate the token
+    console.log('token ', token);
+    return { token, user: retrievedUser };
+  } catch (error) {
+    console.log('auth failed ', error);
+    throw error;
+  }
         }
 
     // async addStashItem(id, data)
