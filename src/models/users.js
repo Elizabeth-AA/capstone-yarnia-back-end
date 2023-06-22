@@ -33,7 +33,6 @@ class User {
             const newUser = await database
                 .insert(userData)
                 .into('users')
-                .return('*')
             const token = generateToken({ username: newUser.username })
                 return token
         } catch (error) {
@@ -41,32 +40,40 @@ class User {
         }
     }
 
-    authUser(user) {
-        // const { user } = req.body
-        return database
-            .from('users')
-            .where({ username: user.username })
-            .first()
-            .then((retrievedUser) => {
-                if (!retrievedUser) throw new Error('user not found')
-                return Promise.all([
-                    bcrypt.compare(user.password, retrievedUser.password),
-                    Promise.resolve(retrievedUser),
-                ]).then((results) => {
-                    const passwordMatch = results[0]
-                    if (!passwordMatch) throw new Error('incorrect password')
-                    const user = results[1]
-                    const payload = { username: user.username }
-                    const secret = 'SECRET'
-                    jwt.sign(payload, secret, (error, token) => {
-                        if (error) throw new Error('sign in error')
-                        response.json({ token, user })
-                    }).catch((error) => {
-                        response.json({ message: error.message })
-                    })
-                })
-            })
-    }
+    async authUser(user) {
+        console.log("model ", user)
+        try {
+            const retrievedUser = await database
+                .from('users')
+                .where('email', user.email)
+                .first()
+            console.log("retrieved user ", retrievedUser)
+            if (!retrievedUser) throw new Error('user not found')
+            // const passwordMatch = await Promise.all([
+            //     bcrypt.compare(user.password, retrievedUser.password),
+            //     Promise.resolve(retrievedUser),
+            // ])
+            const passwordMatch = await bcrypt.compare(user.password, retrievedUser.password)
+            console.log(passwordMatch)
+            if (!passwordMatch) throw new Error('incorrect password')
+            const payload = { user: retrievedUser }
+            console.log(payload)
+            const secret = 'SECRET'
+            const token = await new Promise((resolve, reject) => {
+                jwt.sign(payload, secret, (error, token) => {
+                  if (error) reject(error);
+                  resolve(token);
+                });
+              });
+            console.log("token ", token)
+            return { token, user: retrievedUser }
+            //   return response.json({ token, user: retrievedUser });
+            // } catch (error) {
+            //   return response.status(500).json({ message: error.message });
+            } catch (error) {
+                console.log("auth failed ", error)
+            }
+        }
 
     // async addStashItem(id, data)
     async addStashItem(data) {

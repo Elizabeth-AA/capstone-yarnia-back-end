@@ -14,7 +14,7 @@ app.use((req, res, next) => {
 app.use(bodyParser.json())
 app.use(cors())
 app.use(express.json())
-// app.use(authenticate)
+app.use(authenticate)
 app.use(routes)
 
 export default app

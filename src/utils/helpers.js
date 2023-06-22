@@ -23,13 +23,12 @@ export async function hashPassword(password) {
 
 export async function comparePassword(password, hash) {
     try {
-        const result = await bcrypt.compare(password, hash)
-        return result
+        return await bcrypt.compare(password, hash)
     } catch (e) {
         console.log(e)
     }
 }
 
-export default function generateToken(username) {
-    return jwt.sign(username, "SECRET", { expiresIn: '1800s' })
+export default function generateToken(user) {
+    return jwt.sign(user, "SECRET", { expiresIn: '1800s' })
 }
