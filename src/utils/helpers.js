@@ -21,5 +21,5 @@ export async function comparePassword(password, hash) {
 }
 
 export default function generateToken(user) {
-    return jwt.sign(user, "SECRET", { expiresIn: '1800s' })
+    return jwt.sign(user, "SECRET", { expiresIn: '1h' })
 }

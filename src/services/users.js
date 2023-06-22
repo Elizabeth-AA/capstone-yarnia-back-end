@@ -1,12 +1,12 @@
 import User from '#models/users.js'
 
 class UserService {
-    getById(id) {
-        return User.getById(id)
-    }
+    // getById(id) {
+    //     return User.getById(id)
+    // }
 
-    getStash(id) {
-        return User.getStash(id)
+    getStash(userId) {
+        return User.getStash(userId)
     }
 
     addUser(data) {

@@ -7,9 +7,9 @@ const userRouter = Router()
 userRouter
     .post('/signup', UserController.addUser)
     .post('/login', UserController.authUser)
-    .get('/:userId', authenticate, UserController.getById)
     .post('/:userId', authenticate, UserController.addStashItem)
-    .get('/:userId/yarn', authenticate, UserController.getStash)
+    .get('/:userId', authenticate, UserController.getStash)
+    // .get('/:userId/yarn', authenticate, UserController.getStash)
 
     // .delete('/:id/yarn/:yarnId', authenticate, UserController.deleteStashItem)
 

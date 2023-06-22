@@ -5,21 +5,21 @@ import generateToken from '#utils/helpers.js'
 import { hashPassword } from '#utils/helpers.js'
 
 class User {
-    getById(id) {
-        return database
-            .distinct('id')
-            .first()
-            .from('users')
-            .where('id', id)
-            .select('id', 'username', 'profile', 'email')
-    }
+    // getById(id) {
+    //     return database
+    //         .distinct('id')
+    //         .first()
+    //         .from('users')
+    //         .where('id', id)
+    //         .select('id', 'username', 'profile', 'email')
+    // }
 
-    getStash(id) {
+    getStash(userId) {
         return database
             .from('yarn')
             .innerJoin('users_yarn', 'yarn.id', '=', 'yarn_id')
             .innerJoin('users', 'users_yarn.user_id', '=', 'users.id')
-            .where('users.id', '=', id)
+            .where('users.id', '=', userId)
     }
 
     async addUser(data) {
