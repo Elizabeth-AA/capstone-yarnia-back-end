@@ -17,8 +17,8 @@ class UserService {
         return User.authUser(user)
     }
 
-    addStashItem(data) {
-        return User.addStashItem(data)
+    addStashItem(userId, yarnData) {
+        return User.addStashItem(userId, yarnData)
     }
     // addStashItem(id, data) {
     //     return User.addStashItem(id, data)

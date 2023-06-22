@@ -30,58 +30,48 @@ class User {
                 email: data.email_address,
                 password: hashedPassword,
             }
-            const [userId] = await database
-                .insert(userData)
-                .into('users')
+            const [userId] = await database.insert(userData).into('users')
             const token = generateToken({ username: userData.username })
-                return { token, userId }
+            return { token, userId }
         } catch (error) {
-            console.log(error)
             throw error
         }
     }
 
     async authUser(user) {
         try {
-            const retrievedUser = await database
-                .from('users')
-                .where('email', user.email)
-                .first()
+            const retrievedUser = await database.from('users').where('email', user.email).first()
             if (!retrievedUser) throw new Error('user not found')
             const passwordMatch = await bcrypt.compare(user.password, retrievedUser.password)
             if (!passwordMatch) throw new Error('incorrect password')
             const payload = { user: retrievedUser }
             const secret = 'SECRET'
-            const token = jwt.sign(payload, secret, { expiresIn: '1800s' });
-    return { token, userId: retrievedUser.id };
-  } catch (error) {
-    throw error;
-  }
+            const token = jwt.sign(payload, secret, { expiresIn: '1h' })
+            return { token, userId: retrievedUser.id }
+        } catch (error) {
+            throw error
         }
+    }
 
-    // async addStashItem(id, data)
-    async addStashItem(data) {
-        let yarn_id = null
+    async addStashItem(userId, yarnData) {
+        console.log("model userId ", userId)
+        console.log("model yarnData ", yarnData)
+        let yarnId = null
 
         try {
-            const existingYarn = await database.from('yarn').where('rav_id', data.rav_id)
+            const existingYarn = await database.from('yarn').where('rav_id', yarnData.rav_id).first()
 
             if (!existingYarn) {
-                const [newYarnId] = await database.insert({ ...data }).into('yarn')
-                yarn_id = newYarnId
+                const [newYarnId] = await database.insert({ ...yarnData }).into('yarn')
+                yarnId = newYarnId
             } else {
-                yarn_id = existingYarn.yarn_id
+                yarnId = existingYarn.yarn_id
             }
+            await database.insert({ user_id: userId, yarn_id: yarnId }).into('users_yarn')
+            return yarnId
         } catch (error) {
             console.log(error)
-        } finally {
-            if (yarn_id !== null) {
-                await database
-                    // .insert({user_id: id, yarn_id: yarnId})
-                    .insert({ user_id: user_id, yarn_id: yarn_id })
-                    .into('users_yarn')
-                return yarn_id
-            }
+            throw error
         }
     }
 }

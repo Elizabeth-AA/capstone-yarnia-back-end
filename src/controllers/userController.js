@@ -40,7 +40,11 @@ class UserController {
 
     async addStashItem(req, res) {
         try {
-            await UserService.addStashItem(req.body)
+            const userId = req.params.userId;
+            console.log("controller userId ", userId)
+            const yarnData = req.body;
+            console.log("controller yarnData ", yarnData)
+            await UserService.addStashItem(userId, yarnData)
             res.sendStatus(201)
         } catch (error) {
             res.status(500).json({ message: error.message })

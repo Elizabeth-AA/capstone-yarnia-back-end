@@ -9,7 +9,7 @@ userRouter
     .post('/login', UserController.authUser)
     .get('/:userId', authenticate, UserController.getById)
     .post('/:userId', authenticate, UserController.addStashItem)
-    .get('/:id/yarn', authenticate, UserController.getStash)
+    .get('/:userId/yarn', authenticate, UserController.getStash)
 
     // .delete('/:id/yarn/:yarnId', authenticate, UserController.deleteStashItem)
 
