@@ -6,9 +6,9 @@ class UserController {
         try {
             const userId = req.params.userId;
             const data = await UserService.getStash(userId)
-            res.status(200).json(data)
+            return res.status(200).json(data)
         } catch (error) {
-            res.status(500).json({ message: error.message })
+            return res.status(500).json({ message: error.message })
         }
     }
 
@@ -25,7 +25,6 @@ class UserController {
         try {
             const user = req.body
             const { accessToken, refreshToken, userId } = await UserService.authUser(user)
-            console.log(accessToken)
             return res.status(201).json({ accessToken, refreshToken, userId })
         } catch (error) {
             return res.status(500).json({ message: error.message })
@@ -35,9 +34,7 @@ class UserController {
     async addStashItem(req, res) {
         try {
             const userId = req.params.userId;
-            console.log("controller userId ", userId)
             const yarnData = req.body;
-            console.log("controller yarnData ", yarnData)
             await UserService.addStashItem(userId, yarnData)
             res.sendStatus(201)
         } catch (error) {

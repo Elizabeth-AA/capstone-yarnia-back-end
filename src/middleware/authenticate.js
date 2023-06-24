@@ -6,7 +6,7 @@ export default function authenticate(req, res, next) {
     const accessTokenSecret = "SECRET"
     const refreshTokenSecret = "SECRET"
 
-    const accessToken = req.header('Authorization')
+    const accessToken = req.headers.authorization
 
     if (!accessToken) {
         return res.status(401).json({ message: 'Missing token' })
@@ -19,7 +19,8 @@ export default function authenticate(req, res, next) {
             console.log('Token verification error:', err)
             return res.status(401).json({ message: "Invalid token" })
         }
-        const { username, exp } = decoded.user
+        console.log("verify decoded ", decoded)
+        const { username, exp } = decoded
         console.log('verify ', username)
 
         if (Date.now() >= exp * 1000) {
@@ -32,7 +33,7 @@ export default function authenticate(req, res, next) {
                     console.log('Refresh token verification error:', err)
                     return res.status(401).json({ message: "Invalid refresh token" })
                 }
-                const user = decoded.user
+                const user = decoded
                 const { accessToken, refreshToken } = generateTokens(user)
                 res.json({ accessToken, refreshToken, userId: user.id })
             })
