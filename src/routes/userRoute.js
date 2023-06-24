@@ -1,13 +1,17 @@
 import { Router } from "express"
 import UserController from '#controllers/userController.js'
+import authenticate from "#middleware/authenticate.js"
 
 const userRouter = Router()
 
 userRouter
-    // .post('/', UserController.addUser)
-    .get('/:id', UserController.getById)
-    .get('/:id/yarn', UserController.getStash)
-    .post('/', UserController.addStashItem)
-    // .delete('/:id/yarn/:yarnId', UserController.deleteStashItem)
+    .post('/signup', UserController.addUser)
+    .post('/login', UserController.authUser)
+    .post('/:userId', authenticate, UserController.addStashItem)
+    .get('/:userId', authenticate, UserController.getStash)
+    .post('/refresh-token', UserController.updateAuth)
+    // .get('/:userId/yarn', authenticate, UserController.getStash)
+
+    // .delete('/:id/yarn/:yarnId', authenticate, UserController.deleteStashItem)
 
 export default userRouter
