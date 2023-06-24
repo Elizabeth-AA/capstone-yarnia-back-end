@@ -20,6 +20,22 @@ export async function comparePassword(password, hash) {
     }
 }
 
-export default function generateToken(user) {
-    return jwt.sign(user, "SECRET", { expiresIn: '1h' })
+export async function generateTokens(user) {
+    try {
+        const payload = {
+            id: user.id,
+            username: user.username,
+            email: user.email,
+            password: user.password
+          };
+        console.log(payload)
+  
+        const accessToken = jwt.sign(payload, "SECRET", { expiresIn: '30m' })
+        console.log("access ", accessToken)
+        const refreshToken = jwt.sign(payload, "SECRET", { expiresIn: '7d' })
+        console.log("refresh ", refreshToken)
+        return { accessToken, refreshToken }
+    } catch (error) {
+        throw error
+    }
 }

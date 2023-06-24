@@ -1,18 +1,10 @@
 import database from '#database'
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
-import generateToken from '#utils/helpers.js'
+import { generateTokens } from '#utils/helpers.js'
 import { hashPassword } from '#utils/helpers.js'
 
 class User {
-    // getById(id) {
-    //     return database
-    //         .distinct('id')
-    //         .first()
-    //         .from('users')
-    //         .where('id', id)
-    //         .select('id', 'username', 'profile', 'email')
-    // }
 
     getStash(userId) {
         return database
@@ -31,8 +23,8 @@ class User {
                 password: hashedPassword,
             }
             const [userId] = await database.insert(userData).into('users')
-            const token = generateToken({ username: userData.username })
-            return { token, userId }
+            const { accessToken, refreshToken } = generateToken({ username: userData.username })
+            return { accessToken, refreshToken, userId }
         } catch (error) {
             throw error
         }
@@ -44,10 +36,9 @@ class User {
             if (!retrievedUser) throw new Error('user not found')
             const passwordMatch = await bcrypt.compare(user.password, retrievedUser.password)
             if (!passwordMatch) throw new Error('incorrect password')
-            const payload = { user: retrievedUser }
-            const secret = 'SECRET'
-            const token = jwt.sign(payload, secret, { expiresIn: '1h' })
-            return { token, userId: retrievedUser.id }
+            const { accessToken, refreshToken } = await generateTokens(retrievedUser)
+            console.log("model ", accessToken)
+            return { accessToken, refreshToken, userId: retrievedUser.id }
         } catch (error) {
             throw error
         }

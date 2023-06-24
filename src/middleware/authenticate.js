@@ -1,24 +1,43 @@
 import jwt from 'jsonwebtoken'
 import database from '#database'
+import { generateTokens } from '#utils/helpers.js'
 
 export default function authenticate(req, res, next) {
-    const token = req.header('Authorization')
+    const accessTokenSecret = "SECRET"
+    const refreshTokenSecret = "SECRET"
 
-    if (!token) {
+    const accessToken = req.header('Authorization')
+
+    if (!accessToken) {
         return res.status(401).json({ message: 'Missing token' })
     }
 
-    const formattedToken = token.replace('Bearer ', '')
-    const secret = "SECRET"
+    const formattedToken = accessToken.replace('Bearer ', '')
 
-    jwt.verify(formattedToken, secret, (err, decoded) => {
+    jwt.verify(formattedToken, accessTokenSecret, (err, decoded) => {
         if (err) {
             console.log('Token verification error:', err)
             return res.status(401).json({ message: "Invalid token" })
         }
-        const { username } = decoded.user
+        const { username, exp } = decoded.user
         console.log('verify ', username)
-        return database
+
+        if (Date.now() >= exp * 1000) {
+            const refreshToken = req.header('refreshToken')
+            if (!refreshToken) {
+                return res.status(401).json({ message: "token expired, missing refresh token" })
+            }
+            jwt.verify(refreshToken, refreshTokenSecret, (err, decoded) => {
+                if (err) {
+                    console.log('Refresh token verification error:', err)
+                    return res.status(401).json({ message: "Invalid refresh token" })
+                }
+                const user = decoded.user
+                const { accessToken, refreshToken } = generateTokens(user)
+                res.json({ accessToken, refreshToken, userId: user.id })
+            })
+        } else {
+            return database
             .select()
             .from('users')
             .where('username', username)
@@ -34,5 +53,5 @@ export default function authenticate(req, res, next) {
                 console.log('Database error:', error)
                 res.status(500).json({ message: 'database error' });
               })
-    })
-}
+}})
+        }
