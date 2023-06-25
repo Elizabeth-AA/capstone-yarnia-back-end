@@ -13,8 +13,10 @@ class Auth {
                 password: hashedPassword,
             }
             const [userId] = await database.insert(userData).into('users')
-            const { accessToken, refreshToken } = generateTokens({ username: userData.username })
-            return { accessToken, refreshToken, userId }
+            const user = await database.select('*').from('users').where({ id: userId }).first()
+            const userObject = JSON.parse(JSON.stringify(user))
+            const { accessToken, refreshToken } = await generateTokens(userObject)
+            return { accessToken, refreshToken, userId: userObject.id }
         } catch (error) {
             throw error
         }

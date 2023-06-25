@@ -18,7 +18,7 @@ class User {
                 const [newYarnId] = await database.insert({ ...yarnData }).into('yarn')
                 yarnId = newYarnId
             } else {
-                yarnId = existingYarn.yarn_id
+                yarnId = existingYarn.id
             }
             await database.insert({ user_id: userId, yarn_id: yarnId }).into('users_yarn')
             return yarnId
