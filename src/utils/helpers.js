@@ -27,13 +27,9 @@ export async function generateTokens(user) {
             username: user.username,
             email: user.email,
             password: user.password
-          };
-        console.log(payload)
-  
-        const accessToken = jwt.sign(payload, "SECRET", { expiresIn: '30m' })
-        console.log("access ", accessToken)
+        };
+        const accessToken = jwt.sign(payload, "SECRET", { expiresIn: '1d' })
         const refreshToken = jwt.sign(payload, "SECRET", { expiresIn: '7d' })
-        console.log("refresh ", refreshToken)
         return { accessToken, refreshToken }
     } catch (error) {
         throw error
