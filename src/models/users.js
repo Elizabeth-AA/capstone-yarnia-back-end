@@ -20,7 +20,6 @@ class User {
             } else {
                 yarnId = existingYarn.yarn_id
             }
-            console.log("yarn id ", yarnId)
             await database.insert({ user_id: userId, yarn_id: yarnId }).into('users_yarn')
             return yarnId
         } catch (error) {
