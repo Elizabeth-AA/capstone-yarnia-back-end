@@ -27,6 +27,19 @@ class User {
             throw error
         }
     }
+
+    async deleteStashItem(userId, yarnId) {
+        try {
+          await database.from('users_yarn').where({
+            user_id: userId,
+            yarn_id: yarnId,
+          }).delete();
+          return;
+        } catch (error) {
+          console.log(error);
+          throw error;
+        }
+      }
 }
 
 export default new User()

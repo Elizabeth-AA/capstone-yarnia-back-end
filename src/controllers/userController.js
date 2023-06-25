@@ -23,6 +23,17 @@ class UserController {
         }
     }
 
+    async deleteStashItem(req, res) {
+        try {
+          const userId = req.params.userId;
+          const yarnId = req.params.yarnId;
+          await UserService.deleteStashItem(userId, yarnId);
+          return res.status(204).send();
+        } catch (error) {
+          return res.status(500).json({ message: error.message });
+        }
+      }
+
     async updateAuth(req, res) {
         const refreshToken = req.body.refreshToken
         jwt.verify(refreshToken, "REFRESH_SECRET", (err, decoded) => {
