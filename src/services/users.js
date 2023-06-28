@@ -1,16 +1,17 @@
 import User from '#models/users.js'
 
 class UserService {
-    getById(id) {
-        return User.getById(id)
+    
+    getStash(userId) {
+        return User.getStash(userId)
     }
 
-    getStash(id) {
-        return User.getStash(id)
+    addStashItem(userId, yarnData) {
+        return User.addStashItem(userId, yarnData)
     }
 
-    addUser(user) {
-        return User.addUser(user)
+    deleteStashItem(userId, yarnData) {
+        return User.deleteStashItem(userId, yarnData)
     }
 
     addStashItem(data) {

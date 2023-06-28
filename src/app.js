@@ -1,4 +1,5 @@
 import express from 'express'
+import bodyParser from 'body-parser'
 import cors from 'cors'
 import routes from '#routes'
 
@@ -9,6 +10,7 @@ app.use((req, res, next) => {
     next()
 })
 
+app.use(bodyParser.json())
 app.use(cors())
 app.use(express.json())
 app.use(routes)
