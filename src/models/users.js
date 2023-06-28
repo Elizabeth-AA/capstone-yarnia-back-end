@@ -14,6 +14,7 @@ class User {
         let yarnId = null
         try {
             const existingYarn = await database.from('yarn').where('rav_id', yarnData.rav_id).first()
+
             if (!existingYarn) {
                 const [newYarnId] = await database.insert({ ...yarnData }).into('yarn')
                 yarnId = newYarnId
