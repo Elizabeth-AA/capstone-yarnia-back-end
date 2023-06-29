@@ -13,10 +13,6 @@ class UserService {
     deleteStashItem(userId, yarnData) {
         return User.deleteStashItem(userId, yarnData)
     }
-
-    addStashItem(data) {
-        return User.addStashItem(data)
-    }
 }
 
 export default new UserService()
